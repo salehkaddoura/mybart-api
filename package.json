@@ -12,6 +12,7 @@
     "body-parser": "^1.14.1",
     "express": "^4.13.3",
     "morgan": "^1.6.1",
-    "request": "^2.65.0"
+    "request": "^2.65.0",
+    "stable": "^0.1.5"
   }
 }

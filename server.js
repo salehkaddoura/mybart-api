@@ -21,5 +21,9 @@ app.get('/', function(req, res) {
     res.status(200).json({ message: "hey" });
 });
 
+// routes
+app.use('/', require('./routes/site'));
+app.use('/v1/stations', require('./routes/stations'));
+
 app.listen(port);
 console.log("The magic happens on port: ", port);
