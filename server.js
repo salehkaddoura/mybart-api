@@ -24,6 +24,7 @@ app.get('/', function(req, res) {
 // routes
 app.use('/', require('./routes/site'));
 app.use('/v1/stations', require('./routes/stations'));
+app.use('/v1/etd', require('./routes/etd'));
 
 app.listen(port);
 console.log("The magic happens on port: ", port);

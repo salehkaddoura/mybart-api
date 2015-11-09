@@ -24,12 +24,6 @@ router.get('/', function(req, res) {
     });
 });
 
-router.get('/:id', function(req, res) {
-    res.status(200).send({ message: "get stationg by ID." });
-
-    return;
-});
-
 function sortByLocation(lat, lon, stationData) {
     //compute distances from point
     for (var i in stationData) {
