@@ -1,7 +1,5 @@
 MY-BART API
 ===============================
-
-TODO:
-
+#### TO DO:
 - [ ] Add tests
 - [ ] Parse XML -> JSON from bart api
