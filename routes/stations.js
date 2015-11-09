@@ -9,7 +9,7 @@ router.get('/', function(req, res) {
     var longitude = req.query.lon;
 
     // TO DO: Put api key in process.env.API_KEY
-    request.get('http://bartjson.azurewebsites.net/api/stn.aspx?key=MW9S-E7SL-26DU-VV8V', function(error, response, body) {
+    request.get('http://bartjson.azurewebsites.net/api/stn.aspx?key=' + process.env.API_KEY, function(error, response, body) {
         if (error) {
             res.status(500).send(error);
             return;

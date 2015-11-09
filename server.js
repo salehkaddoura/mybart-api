@@ -1,4 +1,7 @@
 'use strict';
+if (!process.env.NODE_ENV) {
+    require('./config.js');
+}
 var express = require('express');
 var app = express();
 var morgan = require('morgan');
