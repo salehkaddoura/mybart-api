@@ -15,6 +15,11 @@ router.get('/', function(req, res) {
 });
 
 router.get('/:id', function(req, res) {
+    if (typeof(req.params.id) === "undefined") {
+        res.status(401).send({ message: 'Station ID required.' });
+        return;
+    }
+    
     var station = req.params.id;
 
     request.get('http://bartjson.azurewebsites.net/api/etd.aspx?cmd=etd&orig=' + station + '&key=' + process.env.API_KEY, function(error, response, body) {
