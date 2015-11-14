@@ -28,4 +28,14 @@ describe('testing station routes', function() {
                 done();
             })
     })
+
+    it('will get closest station throut lat and long', function(done) {
+        superagent.get(baseUrl + '/stations&lat=37.747269&lon=-122.434763')
+            .end(function(e, res) {
+                expect(e).to.eql(null);
+                console.log(res.body);
+
+                done();
+            });
+    })
 });
