@@ -13,7 +13,7 @@ router.get('/', function(req, res) {
 
         var options = { object: true };
         var stnJson = xmlParser.toJson(body, options);
-        res.send(stnJson);
+        res.send(stnJson.root.station);
     });
 });
 
@@ -28,7 +28,7 @@ router.get('/:id', function(req, res) {
 
         var options = { object: true };
         var stnJson = xmlParser.toJson(body, options);
-        res.send(stnJson);
+        res.send(stnJson.root.station);
     });
 });
 

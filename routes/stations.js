@@ -18,22 +18,23 @@ router.get('/', function(req, res) {
         if (latitude && longitude && !error) {
             var options = { object: true };
             var stnJson = xmlParser.toJson(body, options);
-            res.send(sortByLocation(latitude, json));
+            res.send(sortByLocation(latitude, longitude, stnJson.root.stations.station));
         } else {
             var options = { object: true };
             var stnJson = xmlParser.toJson(body, options);
-            res.send(stnJson);
+            res.send(stnJson.root.stations.station);
         }
         
     });
 });
 
 function sortByLocation(lat, lon, stationData) {
+    // console.log('##', stationData);
     //compute distances from point
     for (var i in stationData) {
         var stationObject = stationData[i];
         //calculate distance from point and add data to each station
-        stationObject.distance = Math.sqrt(Math.pow(lat - stationData[i].latitude, 2) + Math.pow(lon - stationData[i].longitude, 2));
+        stationObject.distance = Math.sqrt(Math.pow(lat - stationData[i].gtfs_latitude, 2) + Math.pow(lon - stationData[i]. gtfs_longitude, 2));
     }
     
     return stable(stationData, function (a, b) {
