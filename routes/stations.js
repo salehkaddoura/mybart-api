@@ -3,22 +3,26 @@ var express = require('express');
 var router = express.Router();
 var request = require('request');
 var stable = require('stable');
+var xmlParser = require('xml2json');
 
 router.get('/', function(req, res) {
     var latitude = req.query.lat;
     var longitude = req.query.lon;
-
-    // TO DO: Put api key in process.env.API_KEY
-    request.get('http://bartjson.azurewebsites.net/api/stn.aspx?key=' + process.env.API_KEY, function(error, response, body) {
+    console.log(process.env.API_KEY);
+    request.get('http://api.bart.gov/api/stn.aspx?cmd=stns&key=' + process.env.API_KEY, function(error, response, body) {
         if (error) {
             res.status(500).send(error);
             return;
         }
         
-        if (latitude && longitude) {
-            res.send(sortByLocation(latitude, longitude, JSON.parse(body)));
+        if (latitude && longitude && !error) {
+            var options = { object: true };
+            var stnJson = xmlParser.toJson(body, options);
+            res.send(sortByLocation(latitude, json));
         } else {
-            res.send(JSON.parse(body));    
+            var options = { object: true };
+            var stnJson = xmlParser.toJson(body, options);
+            res.send(stnJson);
         }
         
     });
