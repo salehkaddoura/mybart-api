@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "api for mybart app",
   "main": "server.js",
+  "private": true,
+  "scripts": {
+    "test": "mocha"
+  },
   "author": "saleh kaddoura",
   "license": "ISC",
   "dependencies": {
