@@ -21,43 +21,47 @@ describe('testing station routes', function() {
         superagent.get(baseUrl + '/stations')
             .end(function(e, res) {
                 expect(e).to.eql(null);
+                console.log(res.body);
                 expect(res.body).to.be.an('array');
 
                 done();
             });
     })
 
-    it('will get closest station using lat and long as query params', function(done) {
-        superagent.get(baseUrl + '/stations?lat=37.747269&lon=-122.434763')
-            .end(function(e, res) {
-                expect(e).to.eql(null);
-                expect(res.body).to.be.an('array');
+    // it('will get closest station using lat and long as query params', function(done) {
+    //     superagent.get(baseUrl + '/stations?lat=37.747269&lon=-122.434763')
+    //         .end(function(e, res) {
+    //             expect(e).to.eql(null);
+    //             console.log(res.body);
+    //             expect(res.body).to.be.an('array');
 
-                done();
-            });
-    })
+    //             done();
+    //         });
+    // })
 });
 
-describe('testing etd routes', function() {
-    it('will get all etd stations', function(done) {
-        superagent.get(baseUrl + '/etd')
-            .end(function(e, res) {
-                expect(e).to.eql(null);
-                expect(res.body).to.be.an('array');
+// describe('testing etd routes', function() {
+//     it('will get all etd stations', function(done) {
+//         superagent.get(baseUrl + '/etd')
+//             .end(function(e, res) {
+//                 expect(e).to.eql(null);
+//                 console.log(res.body);
+//                 expect(res.body).to.be.an('array');
 
-                done();
-            });
-    })
+//                 done();
+//             });
+//     })
 
-    it('will get etd of stations by param', function(done) {
-        superagent.get(baseUrl + '/etd/UCTY')
-            .end(function(e, res) {
-                expect(e).to.eql(null);
-                expect(res.body).to.be.an('object');
-                expect(res.body.name).to.eql('Union City');
-                expect(res.body.abbr).to.eql('UCTY');
+//     it('will get etd of stations by param', function(done) {
+//         superagent.get(baseUrl + '/etd/UCTY')
+//             .end(function(e, res) {
+//                 expect(e).to.eql(null);
+//                 console.log(res.body);  
+//                 expect(res.body).to.be.an('object');
+//                 expect(res.body.name).to.eql('Union City');
+//                 expect(res.body.abbr).to.eql('UCTY');
 
-                done();
-            });
-    })
-});
+//                 done();
+//             });
+//     })
+// });
