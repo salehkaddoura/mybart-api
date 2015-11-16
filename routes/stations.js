@@ -10,34 +10,22 @@ var rp = require('request-promise');
 router.get('/', function(req, res) {
     var latitude = req.query.lat;
     var longitude = req.query.lon;
-    console.log(process.env.API_KEY);
-    getEtdColors().then(function(data) {
-        console.log('###########');
-        console.log(data.root.stations.station);
-    });
-    // request.get('http://api.bart.gov/api/stn.aspx?cmd=stns&key=' + process.env.API_KEY, function(error, response, body) {
-    //     if (error) {
-    //         res.status(500).send(error);
-    //         return;
-    //     }
+    
+    mergeEtdWithStations().then(function(data) {
+        if (!data) {
+            res.status(500).send(data);
+        }
 
-        
-        
-    //     if (latitude && longitude && !error) {
-    //         var options = { object: true };
-    //         var stnJson = xmlParser.toJson(body, options);
-    //         res.send(sortByLocation(latitude, longitude, stnJson.root.stations.station));
-    //     } else {
-    //         var options = { object: true };
-    //         var stnJson = xmlParser.toJson(body, options);
-    //         res.send(stnJson.root.stations.station);
-    //     }
-        
-    // });
+        if (latitude && longitude) {
+            res.send(sortByLocation(latitude, longitude, data.root.stations.station));
+        } else {
+            res.send(data.root.stations.station);    
+        }
+    });
 });
 
 
-function getEtdColors() {
+function mergeEtdWithStations() {
     var options = { object: true };
     return new Promise(function(resolve, reject) {
         rp('http://api.bart.gov/api/etd.aspx?cmd=etd&orig=ALL&key=' + process.env.API_KEY).then(function(body) {
@@ -53,47 +41,21 @@ function getEtdColors() {
                 }
                 
                 resolve(stnInfoJson);
+            }).catch(function(err) {
+                reject(err);
             });
-        });    
+        }).catch(function(err) {
+            reject(err);
+        });   
     });
-    
-
-    // var etdInfo = request.get('http://api.bart.gov/api/etd.aspx?cmd=etd&orig=ALL&key=' + process.env.API_KEY, function(error, response, body) {
-    //     if (error) {
-    //         return null;
-    //     }
-
-    //     var options = { object: true };
-    //     var etdInfoJson = xmlParser.toJson(body, options);
-    //     console.log('###########', etdInfoJson.root);
-    //     return etdInfoJson.root;
-    // });
-
-    // var stnInfo = request.get('http://api.bart.gov/api/stn.aspx?cmd=stns&key=' + process.env.API_KEY, function(error, response, body) {
-    //     if (error) {
-    //         return null;
-    //     }
-
-    //     var options = { object: true };
-    //     return xmlParser.toJson(body, options);
-    // });
-
-    // console.log('######################');
-    // console.log(etdInfo);
-
-    // Promise.all([ etdInfo, stnInfo ]).then(function(results) {
-    //     console.log('THIS IS PROMISE');
-    //     console.log(results);
-    // });
 }
 
 function sortByLocation(lat, lon, stationData) {
-    // console.log('##', stationData);
     //compute distances from point
     for (var i in stationData) {
         var stationObject = stationData[i];
         //calculate distance from point and add data to each station
-        stationObject.distance = Math.sqrt(Math.pow(lat - stationData[i].gtfs_latitude, 2) + Math.pow(lon - stationData[i]. gtfs_longitude, 2));
+        stationObject.distance = Math.sqrt(Math.pow(lat - stationData[i].gtfs_latitude, 2) + Math.pow(lon - stationData[i].gtfs_longitude, 2));
     }
     
     return stable(stationData, function (a, b) {
