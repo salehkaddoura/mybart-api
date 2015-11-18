@@ -12,15 +12,13 @@ router.get('/', function(req, res) {
     var longitude = req.query.lon;
     
     mergeEtdWithStations().then(function(data) {
-        if (!data) {
-            res.status(500).send(data);
-        }
-
         if (latitude && longitude) {
             res.send(sortByLocation(latitude, longitude, data.root.stations.station));
         } else {
             res.send(data.root.stations.station);    
         }
+    }).catch(function(e) {
+        res.status(401).send(e);
     });
 });
 
