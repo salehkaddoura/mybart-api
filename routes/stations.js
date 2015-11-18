@@ -13,9 +13,13 @@ router.get('/', function(req, res) {
     
     mergeEtdWithStations().then(function(data) {
         if (latitude && longitude) {
-            res.send(sortByLocation(latitude, longitude, data.root.stations.station));
+            res.send(sortByLocation(latitude, longitude, data.root[0].stations[0].station));
+            // res.send(sortByLocation(latitude, longitude, data.root.stations.station));
         } else {
-            res.send(data.root.stations.station);    
+            console.log('######################');
+            console.log(data.root[0].stations[0].station);
+            // res.send(data.root.stations.station);
+            res.send(data.root[0].stations[0].station);    
         }
     }).catch(function(e) {
         res.status(401).send(e);
@@ -24,22 +28,31 @@ router.get('/', function(req, res) {
 
 
 function mergeEtdWithStations() {
-    var options = { object: true };
+    var options = { object: true, arrayNotation: true, sanitize: true };
     return new Promise(function(resolve, reject) {
         rp('http://api.bart.gov/api/etd.aspx?cmd=etd&orig=ALL&key=' + process.env.API_KEY).then(function(body) {
             var etdInfoJson = xmlParser.toJson(body, options);
+            // console.log('### ETDINFOJSON #######');
+            // console.log(etdInfoJson.root[0].station[0]);    
             rp('http://api.bart.gov/api/stn.aspx?cmd=stns&key=' + process.env.API_KEY).then(function(data) {
                 var stnInfoJson = xmlParser.toJson(data, options);
-                for (var i = 0; i < stnInfoJson.root.stations.station.length; i++) {
-                    etdInfoJson.root.station.map(function(station) {
-                        if (stnInfoJson.root.stations.station[i].abbr === station.abbr) {
-                            return stnInfoJson.root.stations.station[i].etd = station.etd;
+                // console.log('### STNINFOJSON ');
+                // console.log(stnInfoJson.root[0].stations[0]);    
+                for (var i = 0; i < stnInfoJson.root[0].stations[0].station.length; i++) {
+                    etdInfoJson.root[0].station.map(function(station) {
+                        // console.log(station.abbr[0]);
+                        if (stnInfoJson.root[0].stations[0].station[i].abbr[0] === station.abbr[0]) {
+                            // console.log('hit');
+                            return stnInfoJson.root[0].stations[0].station[i].etd = station.etd;
                         }
                     });
                 }
                 
+                // console.log(stnInfoJson.root[0].stations[0].station[0]);
                 resolve(stnInfoJson);
             }).catch(function(err) {
+                console.log('## ERROR ##');
+                console.log(err);
                 reject(err);
             });
         }).catch(function(err) {

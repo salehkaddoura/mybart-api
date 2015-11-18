@@ -20,8 +20,9 @@ describe('testing station routes', function() {
     it('will get all stations', function(done) {
         superagent.get(baseUrl + '/stations')
             .end(function(e, res) {
+                console.log(e);
                 expect(e).to.eql(null);
-                // console.log(res.body);
+                console.log(res.body);
                 expect(res.body).to.be.an('array');
 
                 done();
