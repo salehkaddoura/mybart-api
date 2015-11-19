@@ -20,9 +20,8 @@ describe('testing station routes', function() {
     it('will get all stations', function(done) {
         superagent.get(baseUrl + '/stations')
             .end(function(e, res) {
-                console.log(e);
                 expect(e).to.eql(null);
-                console.log(res.body);
+                // console.log(res.body);
                 expect(res.body).to.be.an('array');
 
                 done();
@@ -58,9 +57,9 @@ describe('testing etd routes', function() {
             .end(function(e, res) {
                 expect(e).to.eql(null);
                 // console.log(res.body);  
-                expect(res.body).to.be.an('object');
-                expect(res.body.name).to.eql('Union City');
-                expect(res.body.abbr).to.eql('UCTY');
+                expect(res.body).to.be.an('array');
+                expect(res.body[0].name[0]).to.eql('Union City');
+                expect(res.body[0].abbr[0]).to.eql('UCTY');
 
                 done();
             });

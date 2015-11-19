@@ -11,9 +11,9 @@ router.get('/', function(req, res) {
             return;
         }
 
-        var options = { object: true };
+        var options = { object: true, arrayNotation: true, sanitize: true };
         var stnJson = xmlParser.toJson(body, options);
-        res.send(stnJson.root.station);
+        res.send(stnJson.root[0].station);
     });
 });
 
@@ -26,9 +26,9 @@ router.get('/:id', function(req, res) {
             return;
         }
 
-        var options = { object: true };
+        var options = { object: true, arrayNotation: true, sanitize: true };
         var stnJson = xmlParser.toJson(body, options);
-        res.send(stnJson.root.station);
+        res.send(stnJson.root[0].station);
     });
 });
 
